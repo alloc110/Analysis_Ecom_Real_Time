@@ -1,0 +1,21 @@
+<property>
+  <name>javax.jdo.option.ConnectionURL</name>
+  <value>jdbc:postgresql://postgres-service:5432/metastore_db</value>
+</property>
+<property>
+  <name>javax.jdo.option.ConnectionDriverName</name>
+  <value>org.postgresql.Driver</value>
+</property>
+
+
+<property>
+  <name>fs.s3a.endpoint</name>
+  <value>http://myminio-console:9000</value> </property>
+<property>
+  <name>fs.s3a.access.key</name>
+  <value>admin</value>
+</property>
+<property>
+  <name>fs.s3a.secret.key</name>
+  <value>password123</value>
+</property>
