@@ -1,0 +1,13 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: postgres.public.transactions # Tên topic theo chuẩn Debezium
+  namespace: messaging
+  labels:
+    strimzi.io/cluster: my-cluster # Phải khớp với name của cụm Kafka bạn vừa dựng
+spec:
+  partitions: 3 # Chia làm 3 để Flink có thể xử lý song song
+  replicas: 1   # Vì cụm của bạn chỉ có 1 broker (máy cá nhân)
+  config:
+    retention.ms: 7200000 # Giữ dữ liệu trong 2 giờ để tiết kiệm ổ cứng laptop
+    segment.bytes: 1073741824

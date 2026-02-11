@@ -1,0 +1,20 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: inventory-connector
+  namespace: messaging
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector # Driver của Postgres
+  tasksMax: 1
+  config:
+    database.hostname: postgres-service.data-storage.svc.cluster.local # Địa chỉ Postgres
+    database.port: 5432
+    database.dbname: fraud_db
+    database.server.name: dbserver1
+    table.include.list: public.transactions # Chỉ lấy bảng này để nhẹ máy
+    plugin.name: pgoutput # Cực kỳ quan trọng cho Postgres 10+
+    database.user: "debezium_user"
+    database.password: "dbz_pass_2026"
+  # Tên server này sẽ trở thành tiền tố của Kafka Topic

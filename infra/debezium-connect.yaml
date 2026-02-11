@@ -1,0 +1,21 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+  namespace: messaging
+  annotations:
+    strimzi.io/use-connector-resources: "true" # Cho phép quản lý Connector bằng YAML
+spec:
+  version: 3.6.0
+  replicas: 1
+  bootstrapServers: my-cluster-kafka-bootstrap:9092 # Kết nối tới cụm KRaft của bạn
+  image: quay.io/debezium/connect:2.4 # Image chứa sẵn các công cụ của Debezium
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # Các thông số tối ưu cho máy cá nhân
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1

@@ -13,23 +13,23 @@ spec:
         app: hive-metastore
     spec:
       containers:
-      - name: hive-metastore
-        image: apache/hive:standalone-metastore-4.2.0 # Hoặc image apache/hive custom
-        env:
-        - name: HIVE_METASTORE_DB_TYPE
-          value: "postgres"
-        - name: HIVE_METASTORE_JDBC_URL
-          value: "jdbc:postgresql://postgres-service:5432/metastore_db"
-        - name: HIVE_METASTORE_USER
-          value: "hiveuser"
-        - name: HIVE_METASTORE_PASSWORD
-          value: "hivepassword"
-        # Các biến để Hive biết đường tới MinIO
-        - name: HADOOP_CONF_DIR
-          value: "/opt/bitnami/hive/conf"
-        ports:
-        - containerPort: 9083
-          name: metastore
+        - name: hive-metastore
+          image: apache/hive:standalone-metastore-4.2.0 # Hoặc image apache/hive custom
+          env:
+            - name: HIVE_METASTORE_DB_TYPE
+              value: "postgres"
+            - name: HIVE_METASTORE_JDBC_URL
+              value: "jdbc:postgresql://postgres-service:5432/metastore_db"
+            - name: HIVE_METASTORE_USER
+              value: "hiveuser"
+            - name: HIVE_METASTORE_PASSWORD
+              value: "hivepassword"
+            # Các biến để Hive biết đường tới MinIO
+            - name: HADOOP_CONF_DIR
+              value: "/opt/hive/conf"
+          ports:
+            - containerPort: 9083
+              name: metastore
 ---
 apiVersion: v1
 kind: Service

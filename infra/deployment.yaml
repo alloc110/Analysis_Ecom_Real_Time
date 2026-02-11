@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-fraud-detection
+  namespace: stream-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink-app
+  template:
+    metadata:
+      labels:
+        app: flink-app
+    spec:
+      containers:
+        - name: flink-main
+          image: allocknguyen/flink-fraud-detection:v1 # Image từ Docker Hub của bạn
+          args: ["jobmanager"]
+          ports:
+            - containerPort: 8081
