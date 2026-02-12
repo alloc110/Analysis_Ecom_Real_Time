@@ -1,0 +1,6 @@
+additionalCatalogs:
+  postgres: |
+    connector.name=postgresql
+    connection-url=jdbc:postgresql://postgres-service.data-storage.svc.cluster.local:5432/fraud_db
+    connection-user=hiveuser
+    connection-password=hivepassword
