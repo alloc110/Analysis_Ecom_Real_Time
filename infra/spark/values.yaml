@@ -4,3 +4,13 @@ additionalCatalogs:
     connection-url=jdbc:postgresql://postgres-service.data-storage.svc.cluster.local:5432/fraud_db
     connection-user=hiveuser
     connection-password=hivepassword
+  hive: |
+    connector.name=hive
+    # Kết nối tới Service Hive Metastore của bạn
+    hive.metastore.uri=thrift://hive-metastore.data-storage.svc.cluster.local:9083
+    # Cấu hình để Trino đọc được MinIO qua giao thức S3
+    hive.s3.endpoint=http://minio:9000
+    hive.s3.aws-access-key=admin
+    hive.s3.aws-secret-key=password123
+    hive.s3.path-style-access=true
+    hive.s3.ssl.enabled=false

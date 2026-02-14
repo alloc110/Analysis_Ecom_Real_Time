@@ -1,0 +1,37 @@
+-- 1. Tạo Schema riêng cho gọn
+CREATE SCHEMA IF NOT EXISTS warehouse;
+
+-- 2. Bảng quản lý Tài khoản (Account)
+-- Tách nameOrig và nameDest ra đây để tránh lặp lại ID
+CREATE TABLE warehouse.dim_accounts (
+    account_id VARCHAR(50) PRIMARY KEY,
+    is_merchant BOOLEAN DEFAULT FALSE -- Để phân biệt nếu ID bắt đầu bằng 'M'
+);
+
+-- 3. Bảng quản lý Loại giao dịch
+CREATE TABLE warehouse.dim_transaction_types (
+    type_id SERIAL PRIMARY KEY,
+    type_name VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- 4. Bảng Giao dịch chính (Fact Table)
+CREATE TABLE warehouse.fact_transactions (
+    transaction_id SERIAL PRIMARY KEY,
+    step INT NOT NULL,
+    type_id INT REFERENCES warehouse.dim_transaction_types(type_id),
+    amount DECIMAL(18, 2) NOT NULL,
+    orig_account_id VARCHAR(50) REFERENCES warehouse.dim_accounts(account_id),
+    old_balance_org DECIMAL(18, 2),
+    new_balance_orig DECIMAL(18, 2),
+    dest_account_id VARCHAR(50) REFERENCES warehouse.dim_accounts(account_id),
+    old_balance_dest DECIMAL(18, 2),
+    new_balance_dest DECIMAL(18, 2),
+    is_fraud SMALLINT,
+    is_flagged_fraud SMALLINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Insert các loại giao dịch mặc định từ file CSV
+INSERT INTO warehouse.dim_transaction_types (type_name)
+VALUES ('PAYMENT'), ('TRANSFER'), ('CASH_OUT'), ('DEBIT'), ('CASH_IN')
+ON CONFLICT DO NOTHING;
