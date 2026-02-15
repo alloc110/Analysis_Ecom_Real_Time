@@ -16,7 +16,6 @@ with DAG(
     dag_id='test_loc_airflow_k8s',
     default_args=default_args,
     description='DAG kiểm tra kết nối Git-Sync và K8s Worker',
-    schedule_interval=None, # Chỉ chạy khi mình nhấn nút Play (Manual)
     catchup=False,
     tags=['testing', 'minikube'],
 ) as dag:

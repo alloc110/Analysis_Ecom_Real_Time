@@ -12,3 +12,11 @@ dags:
     depth: 1
     wait: 60
     subPath: "Dags" # Đường dẫn trong repo chứa các DAGs
+apiServer:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "300m"
+      memory: "512Mi" # Giới hạn chặt chẽ để không gây sập cả cụm
