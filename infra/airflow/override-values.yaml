@@ -6,8 +6,9 @@ postgresql:
 dags:
   gitSync:
     enabled: true
-    repo: "https://github.com/alloc110/Analysis_Ecom_Real_Time.git" # Link repo của Lộc
+    repo: "https://github.com/alloc110/Analysis_Ecom_Real_Time.git"
     branch: "main"
     rev: "HEAD"
     depth: 1
-    wait: 60 # Cứ 60s kiểm tra code mới 1 lần
+    wait: 60
+    subPath: "Dags" # Đường dẫn trong repo chứa các DAGs
