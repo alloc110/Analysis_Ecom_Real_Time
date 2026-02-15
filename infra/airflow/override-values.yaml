@@ -1,0 +1,13 @@
+postgresql:
+  enabled: true
+  image:
+    repository: postgres
+    tag: 14.21-trixie
+dags:
+  gitSync:
+    enabled: true
+    repo: "https://github.com/alloc110/Analysis_Ecom_Real_Time.git" # Link repo của Lộc
+    branch: "main"
+    rev: "HEAD"
+    depth: 1
+    wait: 60 # Cứ 60s kiểm tra code mới 1 lần
