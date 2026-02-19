@@ -13,7 +13,7 @@ kubectl create namespace data-storage --dry-run=client -o yaml | kubectl apply -
 kubectl create namespace messaging --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace batch-namespace --dry-run=client -o yaml | kubectl apply -f -
 kubectl create namespace stream-namespace --dry-run=client -o yaml | kubectl apply -f -
-
+kubectl create namespace orchestration --dry-run=client -o yaml | kubectl apply -f -
 # 2. Triển khai Cơ sở dữ liệu (Postgres & MinIO)
 echo -e "${GREEN}2. Triển khai Postgres và MinIO...${NC}"
 # Lộc đảm bảo đã có các file yaml này trong folder k8s nhé

@@ -1,8 +1,62 @@
+# 1. Cấu hình Database (Giữ nguyên vì đã đúng)
 postgresql:
   enabled: true
+  auth:
+    username: postgres
+    password: postgres
+    database: postgres
+
   image:
     repository: postgres
-    tag: 14.21-trixie
+    tag: 15-alpine
+    pullPolicy: IfNotPresent
+data:
+  metadataConnection:
+    user: postgres
+    pass: postgres
+    db: postgres
+    host: airflow-postgresql
+    port: 5432
+
+# 2. Cấu hình Image (DÙNG IMAGE BẠN ĐÃ BUILD)
+# Đừng dùng apache/airflow:latest nữa, nó thiếu thư viện!
+images:
+  airflow:
+    repository: my-airflow
+    tag: ecom-v2
+    pullPolicy: Never
+
+webserver:
+  command: ["webserver"]
+  enabled: true
+  replicas: 1
+  defaultUser:
+    enabled: true
+    role: Admin
+    username: admin
+    password: admin
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+  startupProbe:
+    failureThreshold: 60
+    periodSeconds: 10
+
+# Áp dụng cho Scheduler
+scheduler:
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+# 4. GitSync (Giữ nguyên)
 dags:
   gitSync:
     enabled: true
@@ -11,12 +65,4 @@ dags:
     rev: "HEAD"
     depth: 1
     wait: 60
-    subPath: "Dags" # Đường dẫn trong repo chứa các DAGs
-apiServer:
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "256Mi"
-    limits:
-      cpu: "300m"
-      memory: "512Mi" # Giới hạn chặt chẽ để không gây sập cả cụm
+    subPath: "Dags"

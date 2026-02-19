@@ -14,3 +14,6 @@ additionalCatalogs:
     hive.s3.aws-secret-key=password123
     hive.s3.path-style-access=true
     hive.s3.ssl.enabled=false
+env:
+  - name: "_PIP_ADDITIONAL_REQUIREMENTS"
+    value: "psycopg2-binary yfinance pandas"
