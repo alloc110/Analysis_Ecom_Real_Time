@@ -91,3 +91,30 @@ extraPipPackages:
   - "trino==0.328.0"
   - "apache-airflow-providers-trino==5.8.0"
   - "requests==2.31.0"
+  - "faker==40.4.0"
+airflow:
+  connections:
+    - id: postgres_ecom_data # Đặt tên mới để không bị "ma" ám
+      type: postgres
+      host: postgres-service.data-storage.svc.cluster.local
+      login: postgres          # User thật của DB bên data-storage
+      password: postgres       # Password thật của DB bên data-storage
+      schema: postgres         # Tên Database thật bên data-storage
+      port: 5432
+      
+# values.yaml
+
+# 1. Khai báo cho Helm tạo Secret (nếu dùng Helm chart mặc định)
+webserverSecretKey: "PP4RF2gNXxIABjQ1FroMOdO9JjdpAwdP"
+
+config:
+  # 2. Section cũ (cho Webserver UI)
+  webserver:
+    secret_key: "PP4RF2gNXxIABjQ1FroMOdO9JjdpAwdP"
+    
+  # 3. Section MỚI (Đây là nơi gây ra lỗi bạn vừa gửi)
+  api:
+    auth_jwt_secret: "PP4RF2gNXxIABjQ1FroMOdO9JjdpAwdP"
+    # Đôi khi Airflow 3 yêu cầu cả dòng này nếu bạn cấu hình thủ công:
+    secret_key: "PP4RF2gNXxIABjQ1FroMOdO9JjdpAwdP"
+
