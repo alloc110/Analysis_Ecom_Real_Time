@@ -46,7 +46,7 @@ def generate_and_insert_data(batch_size=100, **kwargs):
 
     # 3. Insert dữ liệu vào tầng Bronze
     insert_sql = """
-        INSERT INTO financial_transactions (
+        INSERT INTO fraud_db (
             step, type, amount, nameOrig, oldbalanceOrg, newbalanceOrig,
             nameDest, oldbalanceDest, newbalanceDest, isFraud, isFlaggedFraud
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
