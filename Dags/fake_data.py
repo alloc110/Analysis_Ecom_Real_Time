@@ -16,8 +16,8 @@ def generate_and_insert_data(batch_size=100, **kwargs):
 
     # 2. Lấy giá trị 'step' từ Airflow (ví dụ: dùng số giờ kể từ ngày bắt đầu)
     # 1 step = 1 hour
-    execution_date = kwargs.get('execution_date')
-    step_val = execution_date.hour + (execution_date.day * 24)
+    logical_date = kwargs.get('logical_date')
+    step_val = logical_date.hour + (logical_date.day * 24)
 
     transactions = []
     for _ in range(batch_size):
