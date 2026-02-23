@@ -18,7 +18,14 @@ data:
     host: airflow-postgresql
     port: 5432
 
+
+
 # 2. Cấu hình Image (DÙNG IMAGE BẠN ĐÃ BUILD)
+images:
+  airflow:
+    repository: my-airflow
+    tag: v6
+    pullPolicy: IfNotPresent
 # Đừng dùng apache/airflow:latest nữa, nó thiếu thư viện!
 
 apiServer:
@@ -73,25 +80,8 @@ dags:
     subPath: "Dags"
 
   # Giữ nguyên các phần resources/replicas của bạn...
-extraPipPackages:
-  - "apache-airflow-providers-postgres==6.0.0"
-  - "pandas>=2.0.0"
-  - "requests"
-  - "scikit-learn"
-  - "pandas==2.1.4"
-  - "numpy==1.26.4"
-  - "psycopg2-binary==2.9.9"
-  - "sqlalchemy==1.4.51"
-  - "apache-airflow-providers-amazon==8.20.0"
-  - "s3fs==2024.3.1"  
-  - "pyspark==3.5.1"
-  - "apache-airflow-providers-apache-spark==4.8.0"
-  - "confluent-kafka==2.3.0"
-  - "apache-airflow-providers-apache-kafka==1.4.0"
-  - "trino==0.328.0"
-  - "apache-airflow-providers-trino==5.8.0"
-  - "requests==2.31.0"
-  - "faker==40.4.0"
+
+
 airflow:
   connections:
     - id: postgres_ecom_data # Đặt tên mới để không bị "ma" ám
@@ -101,8 +91,7 @@ airflow:
       password: postgres       # Password thật của DB bên data-storage
       schema: postgres         # Tên Database thật bên data-storage
       port: 5432
-      
-# values.yaml
+  
 
 # 1. Khai báo cho Helm tạo Secret (nếu dùng Helm chart mặc định)
 webserverSecretKey: "PP4RF2gNXxIABjQ1FroMOdO9JjdpAwdP"

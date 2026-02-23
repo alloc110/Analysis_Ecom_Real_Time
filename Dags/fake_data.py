@@ -67,7 +67,7 @@ with DAG(
     'data_generation_paysim_v1',
     default_args=default_args,
     description='Tạo dữ liệu ảo PaySim và đẩy vào Postgres Bronze Layer',
-    schedule_interval='@hourly', # Chạy mỗi giờ một lần tương ứng với 1 step
+    schedule='@hourly', # Chạy mỗi giờ một lần tương ứng với 1 step
     start_date=datetime(2026, 2, 1),
     catchup=False
 ) as dag:
