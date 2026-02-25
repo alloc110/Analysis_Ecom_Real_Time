@@ -1,0 +1,18 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: postgres-connector
+  namespace: stream
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    database.hostname: postgres-service.data-storage.svc.cluster.local
+    database.port: 5432
+    database.user: hiveuser
+    database.password: hivepassword
+    database.dbname: ecom_Db
+    topic.prefix: pg
+    plugin.name: pgoutput
