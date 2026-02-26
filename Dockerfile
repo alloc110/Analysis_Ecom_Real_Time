@@ -1,22 +1,16 @@
-FROM apache/airflow:3.1.7
+# Sử dụng base image Flink 1.17 chính thức
+FROM flink:1.17
 
-USER root
+# 1. Dọn dẹp sạch sẽ các thư viện Kafka cũ/xung đột (nếu lỡ có)
+RUN rm -f /opt/flink/lib/flink-connector-kafka*.jar
+RUN rm -f /opt/flink/lib/kafka-clients*.jar
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    gcc \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# 2. Tải ĐÚNG bản SQL Connector (đã nhồi sẵn Kafka Clients bên trong)
+RUN wget -O /opt/flink/lib/flink-sql-connector-kafka-3.0.0-1.17.jar https://repo1.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka/3.0.0-1.17/flink-sql-connector-kafka-3.0.0-1.17.jar
 
-USER airflow
+# 3. Tải thêm thư viện Format JSON (vì bạn cấu hình 'format' = 'json')
+RUN wget -O /opt/flink/lib/flink-json-1.17.2.jar https://repo1.maven.org/maven2/org/apache/flink/flink-json/1.17.2/flink-json-1.17.2.jar
 
-ENV PIP_NO_CACHE_DIR=1
-ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
-
-COPY requirements.txt /requirements.txt
-
-RUN pip install --no-cache-dir \
-    -r /requirements.txt \
-    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.1.7/constraints-3.12.txt"
+# 4. Phân quyền chuẩn để user 'flink' trong container có thể đọc được
+RUN chmod 644 /opt/flink/lib/flink-sql-connector-kafka-3.0.0-1.17.jar
+RUN chmod 644 /opt/flink/lib/flink-json-1.17.2.jar

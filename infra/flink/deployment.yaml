@@ -1,21 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flink-fraud-detection
-  namespace: stream-namespace
+  name: flink-jobmanager
+  namespace: stream
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: flink-app
+      app: flink
+      component: jobmanager
   template:
     metadata:
       labels:
-        app: flink-app
+        app: flink
+        component: jobmanager
     spec:
       containers:
-        - name: flink-main
-          image: allocknguyen/flink-fraud-detection:v1 # Image từ Docker Hub của bạn
+        - name: jobmanager
+          image: allocknguyen/my-custom-flink:1.17  
           args: ["jobmanager"]
           ports:
-            - containerPort: 8081
+            - containerPort: 6123 # RPC
+            - containerPort: 8081 # REST UI
+            - containerPort: 6124 # Blob Server (Phải thêm cái này)
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/flink/conf/flink-conf.yaml
+              subPath: flink-conf.yaml # Chỉ gắn file này
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: flink-config
+            items:
+              - key: flink-conf.yaml
+                path: flink-conf.yaml

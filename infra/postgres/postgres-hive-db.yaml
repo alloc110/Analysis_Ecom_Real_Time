@@ -27,11 +27,15 @@ spec:
       containers:
         - name: postgres
           image: postgres:15
+          # 👇 ĐÂY LÀ CHÌA KHÓA: Truyền lệnh bật wal_level=logical khi khởi động
+          args:
+            - "-c"
+            - "wal_level=logical"
           ports:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: "metastore_db"
+              value: "ecom_Db" # Mình gợi ý đổi luôn thành ecom_Db cho chuẩn
             - name: POSTGRES_USER
               value: "hiveuser"
             - name: POSTGRES_PASSWORD

@@ -23,7 +23,7 @@ data:
 # 2. Cấu hình Image (DÙNG IMAGE BẠN ĐÃ BUILD)
 images:
   airflow:
-    repository: my-airflow
+    repository: allocknguyen/airflow
     tag: v6
     pullPolicy: IfNotPresent
 # Đừng dùng apache/airflow:latest nữa, nó thiếu thư viện!

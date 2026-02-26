@@ -1,61 +1,70 @@
 #!/bin/bash
 
-# Màu sắc cho terminal để dễ nhìn
+# Màu sắc cho terminal
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+RED='\033[0;31m'
+NC='\033[0m' 
 
-echo -e "${BLUE}🚀 Đang bắt đầu triển khai hệ thống DE trên Minikube...${NC}"
+echo -e "${BLUE}🚀 Đang bắt đầu triển khai hệ thống DE (Postgres - Kafka - Flink - Airflow)...${NC}"
 
-# 1. Tạo các Namespace cần thiết
-echo -e "${GREEN}1. Tạo Namespaces...${NC}"
-kubectl create namespace data-storage --dry-run=client -o yaml | kubectl apply -f -
-kubectl create namespace messaging --dry-run=client -o yaml | kubectl apply -f -
-kubectl create namespace batch-namespace --dry-run=client -o yaml | kubectl apply -f -
-kubectl create namespace stream-namespace --dry-run=client -o yaml | kubectl apply -f -
-kubectl create namespace orchestration --dry-run=client -o yaml | kubectl apply -f -
-# 2. Triển khai Cơ sở dữ liệu (Postgres & MinIO)
-echo -e "${GREEN}2. Triển khai Postgres và MinIO...${NC}"
-# Lộc đảm bảo đã có các file yaml này trong folder k8s nhé
+# 1. Tạo các Namespace
+echo -e "${GREEN}1. Tạo Namespaces (data-storage, stream, orchestration)...${NC}"
+for ns in data-storage stream orchestration monitoring; do
+    kubectl create namespace $ns --dry-run=client -o yaml | kubectl apply -f -
+done
+
+# 2. Cài đặt Strimzi Operator và cấu hình quản lý đa Namespace
+echo -e "${GREEN}2. Cài đặt Strimzi Kafka Operator...${NC}"
 helm repo add strimzi https://strimzi.io/charts/
 helm repo update
+helm upgrade --install strimzi-operator strimzi/strimzi-kafka-operator \
+  --namespace stream \
+  --set watchNamespaces='{*}' # QUAN TRỌNG: Cho phép Operator quản lý tất cả Namespace
 
-# Cài đặt Operator vào namespace messaging
-helm install strimzi-operator strimzi/strimzi-kafka-operator \
-  --namespace data-storage
+# 3. Triển khai Cơ sở dữ liệu (Postgres)
+echo -e "${GREEN}3. Triển khai Postgres tại namespace data-storage...${NC}"
 kubectl apply -f infra/postgres/ -n data-storage    
-kubectl apply -f infra/minio/ -n data-storage
 
-# Thêm vào trước phần cài đặt Trino trong deploy_all.sh
-echo -e "${GREEN}4.5 Triển khai Hive Metastore...${NC}"
-# 2. Apply file Deployment
-kubectl apply -f infra/hive/hive.yaml -n data-storage
+# 4. Triển khai Kafka (Sau khi Operator đã sẵn sàng)
+echo -e "${GREEN}4. Triển khai Kafka tại namespace stream...${NC}"
 
-echo "Đợi Hive Metastore khởi động..."
-kubectl wait --for=condition=ready pod -l app=hive -n data-storage --timeout=90s
-# Đợi Hive Metastore sẵn sàng trước khi cài Trino
-kubectl wait --for=condition=ready pod -l app=hive-metastore -n data-storage --timeout=60s
+kubectl create secret docker-registry my-docker-secret \
+  --docker-server=https://index.docker.io/v1/ \
+  --docker-username=USER-NAME \
+  --docker-password=PASSWORD \
+  --docker-email=EMAIL \
+  -n stream
+helm upgrade --install strimzi-operator strimzi/strimzi-kafka-operator \
+  --namespace stream \
+  --create-namespace \
+  --set watchNamespaces="{stream}"
 
-# 3. Triển khai Kafka
-echo -e "${GREEN}3. Triển khai Kafka...${NC}"
-kubectl apply -f infra/kafka/ -n messaging
+# 5. Triển khai Flink
+echo -e "${GREEN}5. Triển khai Flink tại namespace stream...${NC}"
+kubectl apply -f infra/flink/ -n stream
 
-# 4. Triển khai Spark Operator (Cài đặt qua Helm)
-echo -e "${GREEN}4. Đang kiểm tra Spark Operator...${NC}"
-helm repo add spark-operator https://kubeflow.github.io/spark-operator
+# 6. Triển khai Airflow bằng Helm
+echo -e "${GREEN}6. Triển khai Airflow tại namespace orchestration...${NC}"
+helm repo add apache-airflow https://airflow.apache.org
 helm repo update
-helm upgrade --install my-spark-operator spark-operator/spark-operator \
-  --namespace spark-operator --create-namespace --set webhook.enable=true
 
-echo -e "${GREEN}🚀 Đang triển khai Flink Fraud Detection...${NC}"
-kubectl apply -f infra/flink/deployment.yaml -n stream-namespace
-# 5. Triển khai Trino
-echo -e "${GREEN}5. Triển khai Trino...${NC}"
-# Dùng file values.yaml để giữ cấu hình RAM thấp cho máy ASUS
-helm upgrade --install my-trino trino/trino \
-  --namespace data-storage \
-  --set server.workers=1 \
-  --set coordinator.resources.requests.memory=1Gi
+# Cài đặt Airflow bản tối giản để tiết kiệm RAM cho Minikube
+helm upgrade --install airflow apache-airflow/airflow \
+  --namespace orchestration \
+  --set executor=LocalExecutor \
+  --set webserver.defaultUser.password=admin
 
-echo -e "${BLUE}✅ Hoàn thành! Đợi vài phút để các Pod chuyển sang trạng thái Running.${NC}"
-echo -e "Dùng lệnh: ${GREEN}kubectl get pods -A${NC} để kiểm tra."
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install monitor-stack prometheus-community/kube-prometheus-stack \
+  --namespace monitoring
+
+
+echo -e "${BLUE}====================================================${NC}"
+echo -e "${BLUE}✅ TẤT CẢ LỆNH ĐÃ ĐƯỢC GỬI!${NC}"
+echo -e "1. Kiểm tra Pod: ${GREEN}kubectl get pods -A${NC}"
+echo -e "2. Web Airflow (admin/admin): ${GREEN}kubectl port-forward svc/airflow-webserver 8080:8080 -n orchestration${NC}"
+echo -e "3. Lưu ý: Đợi khoảng 3-5 phút để Kafka và Airflow khởi tạo xong.${NC}"
+echo -e "${BLUE}====================================================${NC}"

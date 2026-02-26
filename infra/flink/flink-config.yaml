@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  namespace: stream
+data:
+  flink-conf.yaml: |
+    jobmanager.rpc.address: flink-jobmanager
+    jobmanager.rpc.port: 6123
+    jobmanager.memory.process.size: 1024m
+    taskmanager.memory.process.size: 2048m
+    taskmanager.numberOfTaskSlots: 2
+    parallelism.default: 2
+    state.backend: rocksdb
+    state.checkpoints.dir: file:///tmp/flink-checkpoints
+    execution.checkpointing.interval: 10s
+    rest.port: 8081
+    
+    # Cố định cổng để tránh lỗi kết nối ngẫu nhiên
+    blob.server.port: 6124
+    taskmanager.rpc.port: 6122
+    
+    # RẤT QUAN TRỌNG: Ngăn Flink tự sửa file flink-conf.yaml khi khởi động
+    # Điều này giúp tránh lỗi Read-only file system
+    jobmanager.bind-host: 0.0.0.0
+    taskmanager.bind-host: 0.0.0.0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager
+  namespace: stream
+spec:
+  type: NodePort
+  ports:
+    - name: rpc
+      port: 6123
+      targetPort: 6123
+    - name: rest
+      port: 8081
+      targetPort: 8081
+      nodePort: 30081
+    - name: blob
+      port: 6124
+      targetPort: 6124
+  selector:
+    app: flink
+    component: jobmanager
