@@ -25,9 +25,9 @@ def insert_1000_users():
             conn = pg_hook.get_conn()
             cursor = conn.cursor()
 
-            print("⏳ Đang chuẩn bị dữ liệu cho 1000 người dùng...")
+            print("⏳ Đang chuẩn bị dữ liệu cho 9000 người dùng...")
             users_data = []
-            for _ in range(1000):
+            for _ in range(9000):
                   user_id = f"user_{fake.unique.random_int(min=1000, max=9999)}"
                   full_name = fake.name()
                   # Theo yêu cầu amount là VARCHAR(20)
@@ -35,7 +35,7 @@ def insert_1000_users():
                   email = fake.email()
                   users_data.append((user_id, full_name, amount, email))
 
-            # Sử dụng execute_values để chèn nhanh 1000 dòng
+            # Sử dụng execute_values để chèn nhanh 9000 dòng
             query = "INSERT INTO users (user_id, full_name, amount, email) VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING"
             cursor.executemany(query, users_data)
 
