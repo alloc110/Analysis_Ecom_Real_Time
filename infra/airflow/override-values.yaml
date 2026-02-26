@@ -10,6 +10,7 @@ postgresql:
     repository: postgres
     tag: 15-alpine
     pullPolicy: IfNotPresent
+
 data:
   metadataConnection:
     user: postgres
@@ -17,8 +18,7 @@ data:
     db: postgres
     host: airflow-postgresql
     port: 5432
-
-
+  
 
 # 2. Cấu hình Image (DÙNG IMAGE BẠN ĐÃ BUILD)
 images:
@@ -84,12 +84,12 @@ dags:
 
 airflow:
   connections:
-    - id: postgres_ecom_data # Đặt tên mới để không bị "ma" ám
+    - id: postgres_ecom_data
       type: postgres
       host: postgres-service.data-storage.svc.cluster.local
-      login: postgres          # User thật của DB bên data-storage
-      password: postgres       # Password thật của DB bên data-storage
-      schema: postgres         # Tên Database thật bên data-storage
+      login: hiveuser 
+      password: hivepassword
+      schema: public
       port: 5432
   
 

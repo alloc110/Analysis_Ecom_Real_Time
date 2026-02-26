@@ -50,10 +50,7 @@ helm repo add apache-airflow https://airflow.apache.org
 helm repo update
 
 # Cài đặt Airflow bản tối giản để tiết kiệm RAM cho Minikube
-helm upgrade --install airflow apache-airflow/airflow \
-  --namespace orchestration \
-  --set executor=LocalExecutor \
-  --set webserver.defaultUser.password=admin
+helm install airflow apache-airflow/airflow -n orchestration -f infra/airflow/override-values.yaml
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update

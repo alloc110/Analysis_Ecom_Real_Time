@@ -37,7 +37,7 @@ def insert_1000_users():
 
             # Sử dụng execute_values để chèn nhanh 1000 dòng
             query = "INSERT INTO users (user_id, full_name, amount, email) VALUES %s ON CONFLICT DO NOTHING"
-            cursor.executemany(query, users_data)
+            cursor.executemany(cursor, query, users_data)
 
             conn.commit()
             print(f"✅ Đã tạo thành công {len(users_data)} người dùng vào PostgreSQL.")
