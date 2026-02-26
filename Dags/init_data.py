@@ -27,8 +27,8 @@ def insert_1000_users():
 
             print("⏳ Đang chuẩn bị dữ liệu cho 9000 người dùng...")
             users_data = []
-            for _ in range(9000):
-                  user_id = f"user_{fake.unique.random_int(min=1000, max=9999)}"
+            for _ in range(1000, 10000):
+                  user_id = f"user_{_}"
                   full_name = fake.name()
                   # Theo yêu cầu amount là VARCHAR(20)
                   amount = str(random.randint(100000, 50000000)) 
