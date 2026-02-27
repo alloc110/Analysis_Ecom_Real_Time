@@ -47,6 +47,8 @@ def generate_and_insert_data(batch_size=10, **kwargs):
                   ) VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             cursor.executemany(insert_sql, transactions)
+            print(f"✅ Đã tạo thành công {len(transactions)} giao dịch vào PostgreSQL.")
+
             conn.commit()
             cursor.close()
             conn.close()
