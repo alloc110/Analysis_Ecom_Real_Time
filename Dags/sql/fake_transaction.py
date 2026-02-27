@@ -42,7 +42,7 @@ def generate_and_insert_data(batch_size=10, **kwargs):
 
             # 3. Insert dữ liệu
             insert_sql = """
-                  INSERT INTO transaction (
+                  INSERT INTO transactions (
                         step, transaction_id, user_id, dest_user_id, amount, payment_method, transaction_time
                   ) VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
