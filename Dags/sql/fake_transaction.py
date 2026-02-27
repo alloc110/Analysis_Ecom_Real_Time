@@ -18,7 +18,7 @@ def generate_and_insert_data(batch_size=10, **kwargs):
             transactions = []
             for _ in range(batch_size):
                   
-                  step = fake.random_number(min = 1, max = 744)        # Số giờ trong một tháng
+                  step = random.randint(1, 744)        # Số giờ trong một tháng
                   transaction_id = f"T{fake.random_number(digits=10)}" # ID giao dịch giả
                   amount = round(random.uniform(1.0, 500000.0), 2)      # Số tiền giao dịch từ 1 đến 500,000
                   payment_method = random.choice(['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER'])
