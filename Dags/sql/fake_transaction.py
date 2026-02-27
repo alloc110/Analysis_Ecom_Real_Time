@@ -22,8 +22,12 @@ def generate_and_insert_data(batch_size=10, **kwargs):
                   transaction_id = f"T{fake.random_number(digits=10)}" # ID giao dịch giả
                   amount = round(random.uniform(1.0, 500000.0), 2)      # Số tiền giao dịch từ 1 đến 500,000
                   payment_method = random.choice(['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER'])
-                  user = f"user_{fake.random_number(min=1000, max=9999)}"
-                  user_dest = f"user_{fake.random_number(min=1000, max=9999)}"
+                  user = f"user_{random.randint(1000, 9999)}" # ID người dùng giả
+                  user_dest = f"user_{random.randint(1000, 9999)}" # ID người nhận giả
+                  
+                  while user == user_dest:
+                        user_dest = f"user_{random.randint(1000, 9999)}"
+                  
                   time = fake.date_time_this_month()        
 
                   transactions.append((
@@ -36,7 +40,7 @@ def generate_and_insert_data(batch_size=10, **kwargs):
                         time
                   ))
 
-            # 3. Insert dữ liệu vào tầng Bronze
+            # 3. Insert dữ liệu
             insert_sql = """
                   INSERT INTO transaction (
                         step, transaction_id, user_id, dest_user_id, amount, payment_method, transaction_time
@@ -60,7 +64,7 @@ default_args = {
 with DAG(
       'generate_fake_transactions',
       default_args=default_args,
-      description='Tạo dữ liệu ảo PaySim và đẩy vào Postgres Bronze Layer',
+      description='Tạo dữ liệu ảo',
       start_date=datetime(2026, 2, 1),
       catchup=False
 ) as dag:
