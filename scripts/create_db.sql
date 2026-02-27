@@ -10,12 +10,12 @@ CREATE TABLE users (
 
 -- 3. Bảng Giao dịch (Nơi luồng data tuôn chảy liên tục)
 CREATE TABLE transactions (
+    step INT,
     transaction_id VARCHAR(50) PRIMARY KEY,
     user_id VARCHAR(50) REFERENCES users(user_id),
     dest_user_id VARCHAR(50) references USERS(USER_ID),
     amount DECIMAL(10, 2),
     payment_method VARCHAR(50),
-    status VARCHAR(20),
     transaction_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
