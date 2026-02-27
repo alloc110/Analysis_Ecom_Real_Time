@@ -33,9 +33,9 @@ def generate_and_insert_data(batch_size=10, **kwargs):
                   transactions.append((
                         step,
                         transaction_id, 
-                        amount, 
                         user,
                         user_dest,
+                        amount,
                         payment_method,
                         time
                   ))
