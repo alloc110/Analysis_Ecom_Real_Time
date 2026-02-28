@@ -58,6 +58,12 @@ helm repo update
 helm install monitor-stack prometheus-community/kube-prometheus-stack \
   --namespace monitoring
 
+# Cai dat minio
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm install my-minio bitnami/minio -n data-storage -f infra/minio/values.yaml
+
+
 
 echo -e "${BLUE}====================================================${NC}"
 echo -e "${BLUE}✅ TẤT CẢ LỆNH ĐÃ ĐƯỢC GỬI!${NC}"

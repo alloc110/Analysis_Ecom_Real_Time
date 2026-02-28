@@ -16,7 +16,8 @@ spec:
     database.dbname: ecom_Db
     topic.prefix: pg
     plugin.name: pgoutput
-
+    decimal.handling.mode: double
+    
     schema.include.list: public
     table.include.list: public.transactions
     publication.autocreate.mode: filtered

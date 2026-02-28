@@ -26,6 +26,15 @@ spec:
             - name: config-volume
               mountPath: /opt/flink/conf/flink-conf.yaml
               subPath: flink-conf.yaml
+            - name: flink-config-volume
+              mountPath: /opt/flink/usrlib/init.sql
+              subPath: init.sql
+            - name: flink-config-volume
+              mountPath: /opt/flink/usrlib/fraud_prediction.py
+              subPath: fraud_prediction.py
+            - name: flink-config-volume
+              mountPath: /opt/flink/usrlib/fraud_model.json
+              subPath: fraud_model.json
       volumes:
         - name: config-volume
           configMap:
@@ -34,3 +43,6 @@ spec:
             items:
               - key: flink-conf.yaml
                 path: flink-conf.yaml
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
