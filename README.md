@@ -1,29 +1,3 @@
-# 🚀 J-DataPipe: Intelligent Data Engineering Platform
-
-![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.95-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-1.27-326ce5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache_Kafka-2496ED?style=for-the-badge&logo=apache-kafka&logoColor=white)
-![Gemini](https://img.shields.io/badge/Google%20Gemini-AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)
-
-> **Project:** J-DataPipe Architecture  
-> **University:** Ho Chi Minh City Open University  
-> **Core Tech:** Kafka, Flink, PostgreSQL, MinIO, XGBoost, Kubernetes
-
-J-DataPipe là một hệ thống **Data Platform** toàn diện kết hợp giữa xử lý thời gian thực (Real-time) và phân tích hàng loạt (Batch Processing). Hệ thống tận dụng sức mạnh của **Google Gemini API** để phân tích dữ liệu hình ảnh/kiến trúc và tích hợp mô hình **XGBoost** để dự báo giá trị.
-
----
-
-## 🏗 High-level System Architecture
-
-Hệ thống được thiết kế theo mô hình Microservices vận hành trên Kubernetes, bao gồm các lớp:
-
-Dựa trên sơ đồ kiến trúc hệ thống bạn vừa gửi, tôi đã tinh chỉnh lại nội dung README.md để phản ánh đúng quy trình hoạt động của J-DataPipe, đặc biệt là sự kết hợp giữa Data Warehouse (PostgreSQL), Data Lake (MinIO/Hive) và luồng xử lý Streaming.
-
-Đây là mã nguồn Markdown hoàn chỉnh cho dự án của bạn:
-
-Markdown
-
 # 🚀 J-DataPipe: Intelligent Data Engineering & AI Platform
 
 ![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
