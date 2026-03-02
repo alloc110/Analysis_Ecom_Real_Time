@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 J-DataPipe: Intelligent Data Engineering Platform
 
 ![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
@@ -25,6 +26,9 @@ Dựa trên sơ đồ kiến trúc hệ thống bạn vừa gửi, tôi đã tin
 Markdown
 
   # 🚀 J-DataPipe: Intelligent Data Engineering & AI Platform
+=======
+# 🚀 J-DataPipe: Intelligent Data Engineering & AI Platform
+>>>>>>> fe8660700066bb079c4595a97fe781206482af09
 
 ![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95-009688?style=for-the-badge&logo=fastapi&logoColor=white)
