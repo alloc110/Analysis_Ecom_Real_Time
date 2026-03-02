@@ -31,7 +31,7 @@ def insert_1000_users():
                   user_id = f"user_{_}"
                   full_name = fake.name()
                   # Theo yêu cầu amount là VARCHAR(20)
-                  amount = str(random.randint(100000, 50000000)) 
+                  amount = (random.randint(100000, 50000000)) 
                   email = fake.email()
                   users_data.append((user_id, full_name, amount, email))
 

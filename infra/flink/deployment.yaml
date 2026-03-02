@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: jobmanager
-          image: allocknguyen/my-custom-flink:1.17  
+          image: allocknguyen/flink-ml-full:v2 
           args: ["jobmanager"]
           ports:
             - containerPort: 6123 # RPC

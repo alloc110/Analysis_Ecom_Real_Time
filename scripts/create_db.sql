@@ -2,7 +2,7 @@
 CREATE TABLE users (
     user_id VARCHAR(50) PRIMARY KEY,
     full_name VARCHAR(100),
-    amount VARCHAR(20),
+    amount DOUBLE PRECISION,
     email VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

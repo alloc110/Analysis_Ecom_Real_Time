@@ -24,7 +24,10 @@ data:
     # Điều này giúp tránh lỗi Read-only file system
     jobmanager.bind-host: 0.0.0.0
     taskmanager.bind-host: 0.0.0.0
-
+    s3.endpoint: http://my-minio.data-storage:9000
+    s3.access-key: admin
+    s3.secret-key: admin123
+    s3.path.style.access: true
 ---
 
 apiVersion: v1

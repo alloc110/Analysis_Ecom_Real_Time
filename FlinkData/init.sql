@@ -13,41 +13,42 @@ SET 's3.path.style.access' = 'true';
 -- =================================================================
 -- 2. BẢNG KAFKA (DỮ LIỆU GIAO DỊCH REAL-TIME)
 -- =================================================================
+drop table if exists kafka_transactions;
 CREATE TABLE IF NOT EXISTS kafka_transactions (
     step INT,
     type STRING,
     amount DOUBLE,
-    nameOrig STRING,
     oldbalanceOrg DOUBLE,
     newbalanceOrig DOUBLE,
-    nameDest STRING,
     oldbalanceDest DOUBLE,
     newbalanceDest DOUBLE,
-    isFraud INT,
-    isFlaggedFraud INT,
     transaction_id STRING,
-    proctime AS PROCTIME(), -- Dùng để Join
-    PRIMARY KEY (transaction_id) NOT ENFORCED
+    user_id STRING,
+    proctime AS PROCTIME()
 ) WITH (
     'connector' = 'kafka',
     'topic' = 'pg.public.transactions',
     'properties.bootstrap.servers' = 'my-cluster-kafka-bootstrap:9092', 
     'properties.group.id' = 'flink_production_group',
     'scan.startup.mode' = 'earliest-offset',
-    'format' = 'json',
-      'json.fail-on-missing-field' = 'false',
+    'format' = 'debezium-json','debezium-json.schema-include' = 'true', -- THÊM DÒNG NÀY VÀO ĐÂY
+   'debezium-json.ignore-parse-errors' = 'true' -- Thêm dòng này để bỏ qua nếu có tin nhắn lỗi
 );
+
 
 -- =================================================================
 -- 3. BẢNG POSTGRES (DÙNG ĐỂ TRA CỨU SỐ DƯ - LOOKUP)
 -- =================================================================
+DROP TABLE IF EXISTS pg_users;
 CREATE TABLE IF NOT EXISTS pg_users (
     user_id STRING,
-    current_balance DOUBLE,
+    amount DOUBLE, -- Khai báo đúng kiểu VARCHAR bên Postgres
+    -- Tạo cột số để dùng cho XGBoost
+    current_balance AS CAST(amount AS DOUBLE), 
     PRIMARY KEY (user_id) NOT ENFORCED
-) WITH (
+ ) WITH (
     'connector' = 'jdbc',
-    'url' = 'jdbc:postgresql://postgres-service:5432/ecom_Db',
+    'url' = 'jdbc:postgresql://postgres-service.data-storage:5432/ecom_Db', 
     'table-name' = 'users',
     'username' = 'hiveuser',
     'password' = 'hivepassword'
