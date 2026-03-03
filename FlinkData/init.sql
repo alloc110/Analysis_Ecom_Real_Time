@@ -13,15 +13,15 @@ SET 's3.path.style.access' = 'true';
 -- =================================================================
 -- 2. BẢNG KAFKA (DỮ LIỆU GIAO DỊCH REAL-TIME)
 -- =================================================================
-drop table if exists kafka_transactions;
+DROP TABLE IF EXISTS kafka_transactions;
 CREATE TABLE IF NOT EXISTS kafka_transactions (
     step INT,
     type STRING,
-    amount DOUBLE,
-    oldbalanceOrg DOUBLE,
-    newbalanceOrig DOUBLE,
-    oldbalanceDest DOUBLE,
-    newbalanceDest DOUBLE,
+    amount BIGINT,
+    oldbalanceOrg BIGINT,
+    newbalanceOrig BIGINT,
+    oldbalanceDest BIGINT,
+    newbalanceDest BIGINT,
     transaction_id STRING,
     user_id STRING,
     proctime AS PROCTIME()
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS kafka_transactions (
     'properties.group.id' = 'flink_production_group',
     'scan.startup.mode' = 'earliest-offset',
     'format' = 'debezium-json','debezium-json.schema-include' = 'true', -- THÊM DÒNG NÀY VÀO ĐÂY
-   'debezium-json.ignore-parse-errors' = 'true' -- Thêm dòng này để bỏ qua nếu có tin nhắn lỗi
+    'debezium-json.ignore-parse-errors' = 'true' -- Thêm dòng này để bỏ qua nếu có tin nhắn lỗi
 );
 
 
@@ -42,9 +42,9 @@ CREATE TABLE IF NOT EXISTS kafka_transactions (
 DROP TABLE IF EXISTS pg_users;
 CREATE TABLE IF NOT EXISTS pg_users (
     user_id STRING,
-    amount DOUBLE, -- Khai báo đúng kiểu VARCHAR bên Postgres
+    amount BIGINT, -- Khai báo đúng kiểu VARCHAR bên Postgres
     -- Tạo cột số để dùng cho XGBoost
-    current_balance AS CAST(amount AS DOUBLE), 
+    current_balance AS amount,
     PRIMARY KEY (user_id) NOT ENFORCED
  ) WITH (
     'connector' = 'jdbc',

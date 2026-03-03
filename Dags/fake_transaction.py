@@ -20,7 +20,7 @@ def generate_and_insert_data(batch_size=10, **kwargs):
                   
                   step = random.randint(1, 744)        # Số giờ trong một tháng
                   transaction_id = f"T{fake.random_number(digits=10)}" # ID giao dịch giả
-                  amount = round(random.uniform(1.0, 500000.0), 2)      # Số tiền giao dịch từ 1 đến 500,000
+                  amount = random.randint(1, 500000)      # Số tiền giao dịch từ 1 đến 500,000
                   payment_method = random.choice(['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER'])
                   user = f"user_{random.randint(1000, 9999)}" # ID người dùng giả
                   user_dest = f"user_{random.randint(1000, 9999)}" # ID người nhận giả
@@ -43,7 +43,7 @@ def generate_and_insert_data(batch_size=10, **kwargs):
             # 3. Insert dữ liệu
             insert_sql = """
                   INSERT INTO transactions (
-                        step, transaction_id, user_id, dest_user_id, amount, payment_method, transaction_time
+                        step, transaction_id, source_user_id, dest_user_id, amount, payment_method, transaction_time
                   ) VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             cursor.executemany(insert_sql, transactions)
