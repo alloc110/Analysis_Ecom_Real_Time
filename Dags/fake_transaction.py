@@ -20,7 +20,7 @@ def generate_and_insert_data(batch_size=10, **kwargs):
                   
                   step = random.randint(1, 744)        # Số giờ trong một tháng
                   transaction_id = f"T{fake.random_number(digits=10)}" # ID giao dịch giả
-                  amount = random.randint(100, 5000000)      # Số tiền giao dịch từ 1 đến 5,000,000
+                  amount = random.randint(10000, 5000000)      # Số tiền giao dịch từ 1 đến 5,000,000
                   payment_method = random.choice(['CASH_IN', 'CASH_OUT', 'DEBIT', 'PAYMENT', 'TRANSFER'])
                   user = f"user_{random.randint(1000, 9999)}" # ID người dùng giả
                   user_dest = f"user_{random.randint(1000, 9999)}" # ID người nhận giả

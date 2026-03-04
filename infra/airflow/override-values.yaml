@@ -24,7 +24,7 @@ data:
 images:
   airflow:
     repository: allocknguyen/airflow
-    tag: v6
+    tag: v7
     pullPolicy: IfNotPresent
 # Đừng dùng apache/airflow:latest nữa, nó thiếu thư viện!
 
@@ -84,7 +84,7 @@ dags:
 
 airflow:
   connections:
-    - id: postgres_ecom_data
+    - id: my_postgres_conn
       type: postgres
       host: postgres-service.data-storage.svc.cluster.local
       login: hiveuser 
@@ -107,3 +107,15 @@ config:
     # Đôi khi Airflow 3 yêu cầu cả dòng này nếu bạn cấu hình thủ công:
     secret_key: "PP4RF2gNXxIABjQ1FroMOdO9JjdpAwdP"
 
+serviceAccount:
+  create: true
+  name: "airflow-worker-sa"
+
+# Gắn ServiceAccount này vào Scheduler và Worker
+scheduler:
+  serviceAccount:
+    name: "airflow-worker-sa"
+    
+worker:
+  serviceAccount:
+    name: "airflow-worker-sa"
