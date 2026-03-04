@@ -68,7 +68,7 @@ with DAG(
       default_args=default_args,
       description='Tạo dữ liệu ảo',
       start_date=datetime(2026, 2, 1),
-      schedule='*/5 * * * *',
+      schedule='*/1 * * * *',
       catchup=False
 ) as dag:
       generate_task = PythonOperator(
