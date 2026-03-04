@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: jobmanager
-          image: allocknguyen/flink-ml-full:v2 
+          image: allocknguyen/flink-ml-full:v3
           args: ["jobmanager"]
           ports:
             - containerPort: 6123 # RPC
@@ -53,3 +53,10 @@ spec:
         - name: flink-config-volume
           configMap:
             name: flink-config
+            items:
+              - key: init.sql            # Key này phải trùng với tên trong ConfigMap
+                path: init.sql
+              - key: fraud_prediction.py  # Key này phải trùng với tên trong ConfigMap
+                path: fraud_prediction.py
+              - key: fraud_model.json      # CHỖ QUAN TRỌNG NHẤT NÈ LỘC
+                path: fraud_model.json

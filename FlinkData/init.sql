@@ -14,18 +14,15 @@ SET 's3.path.style.access' = 'true';
 -- 2. BẢNG KAFKA (DỮ LIỆU GIAO DỊCH REAL-TIME)
 -- =================================================================
 DROP TABLE IF EXISTS kafka_transactions;
-CREATE TABLE IF NOT EXISTS kafka_transactions (
+ CREATE TABLE IF NOT EXISTS kafka_transactions (
     step INT,
-    type STRING,
-    amount BIGINT,
-    oldbalanceOrg BIGINT,
-    newbalanceOrig BIGINT,
-    oldbalanceDest BIGINT,
-    newbalanceDest BIGINT,
     transaction_id STRING,
     user_id STRING,
+    dest_user_id STRING,
+    amount BIGINT,
+    payment_method STRING,
     proctime AS PROCTIME()
-) WITH (
+ ) WITH (
     'connector' = 'kafka',
     'topic' = 'pg.public.transactions',
     'properties.bootstrap.servers' = 'my-cluster-kafka-bootstrap:9092', 
@@ -33,7 +30,8 @@ CREATE TABLE IF NOT EXISTS kafka_transactions (
     'scan.startup.mode' = 'earliest-offset',
     'format' = 'debezium-json','debezium-json.schema-include' = 'true', -- THÊM DÒNG NÀY VÀO ĐÂY
     'debezium-json.ignore-parse-errors' = 'true' -- Thêm dòng này để bỏ qua nếu có tin nhắn lỗi
-);
+ );
+
 
 
 -- =================================================================
@@ -71,8 +69,33 @@ WITH (
     'format' = 'parquet'
 );
 
+
 -- =================================================================
--- 5. ĐĂNG KÝ HÀM ML XGBOOST
+-- 5. SELECT TEST (KIỂM TRA JOIN GIỮA KAFKA VÀ POSTGRES)
+-- =================================================================
+SELECT 
+    t.transaction_id,
+    t.user_id AS user_id,
+    t.amount AS transaction_amount,
+    u_sor.current_balance AS SOURCE_USER_OLD_BALANCE, --ây là số dư lấy từ bảng User
+    CASE 
+        WHEN t.payment_method = 'CASH_OUT' OR t.payment_method = 'TRANSFER' OR t.payment_method = 'DEBIT' THEN u_sor.current_balance - t.amount 
+        ELSE (u_sor.current_balance + t.amount) -- Nếu là rút tiền hoặc chuyển tiền thì số dư mới sẽ là số dư cũ trừ đi số tiền giao dịch
+    END AS SOURCE_USER_NEW_BALANCE,
+    u_des.current_balance AS DEST_USER_OLD_BALANCE,
+    CASE 
+        WHEN t.payment_method = 'CASH_OUT' OR t.payment_method = 'TRANSFER' OR t.payment_method = 'DEBIT' THEN u_des.current_balance + t.amount 
+        ELSE (u_des.current_balance - t.amount)
+    END AS DEST_USER_NEW_BALANCE,
+    t.payment_method as TYPE
+FROM kafka_transactions t
+LEFT JOIN pg_users FOR SYSTEM_TIME AS OF t.proctime AS u_sor -- Temporal Join
+ON t.user_id = u_sor.user_id
+LEFT JOIN pg_users FOR SYSTEM_TIME AS OF t.proctime AS u_des -- Temporal Join
+ON t.dest_user_id = u_des.user_id;
+
+-- =================================================================
+-- 6. ĐĂNG KÝ HÀM ML XGBOOST
 -- =================================================================
 CREATE TEMPORARY FUNCTION IF NOT EXISTS predict_fraud 
 AS 'fraud_prediction.predict_fraud' 

@@ -29,7 +29,6 @@ data:
     s3.secret-key: admin123
     s3.path.style.access: true
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

@@ -22,9 +22,15 @@ CREATE TABLE transactions (
 
 -- 4. Bảng Cảnh báo gian lận (Đích đến để Flink ghi kết quả)
 CREATE TABLE fraud_alerts (
-    alert_id SERIAL PRIMARY KEY, -- SERIAL tự động tăng số 1, 2, 3...
-    transaction_id VARCHAR(50) REFERENCES transactions(transaction_id),
-    risk_score DECIMAL(5, 2),
-    alert_reason VARCHAR(255),
+    transaction_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255),
+    amount DOUBLE PRECISION,
+    payment_method VARCHAR(50),
+    is_fraud_predicted INTEGER, -- Máy dự đoán (0 hoặc 1)
+    
+    -- HAI CỘT LỘC CẦN THÊM --
+    actual_label INTEGER DEFAULT NULL, -- Con người xác nhận lại (0: Thật, 1: Gian lận)
+    status VARCHAR(20) DEFAULT 'PENDING', -- Trạng thái (PENDING, VERIFIED, CLOSED)
+    
     alert_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
