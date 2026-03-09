@@ -6,8 +6,8 @@ SET 'sql-client.execution.result-mode' = 'table';
 
 -- Cấu hình để Flink có thể ghi file vào MinIO
 SET 's3.endpoint' = 'http://my-minio.data-storage.svc.cluster.local:9000';
-SET 's3.access-key' = 'hiveuser'; -- Thay bằng user của Lộc
-SET 's3.secret-key' = 'hivepassword'; -- Thay bằng pass của Lộc
+SET 's3.access-key' = 'hiveuser'; 
+SET 's3.secret-key' = 'hivepassword';
 SET 's3.path.style.access' = 'true';
 
 -- =================================================================
@@ -28,8 +28,8 @@ DROP TABLE IF EXISTS kafka_transactions;
     'properties.bootstrap.servers' = 'my-cluster-kafka-bootstrap:9092', 
     'properties.group.id' = 'flink_production_group',
     'scan.startup.mode' = 'earliest-offset',
-    'format' = 'debezium-json','debezium-json.schema-include' = 'true', -- THÊM DÒNG NÀY VÀO ĐÂY
-    'debezium-json.ignore-parse-errors' = 'true' -- Thêm dòng này để bỏ qua nếu có tin nhắn lỗi
+    'format' = 'debezium-json','debezium-json.schema-include' = 'true', 
+    'debezium-json.ignore-parse-errors' = 'true' 
  );
 
 
@@ -40,8 +40,7 @@ DROP TABLE IF EXISTS kafka_transactions;
 DROP TABLE IF EXISTS pg_users;
 CREATE TABLE IF NOT EXISTS pg_users (
     user_id STRING,
-    amount BIGINT, -- Khai báo đúng kiểu VARCHAR bên Postgres
-    -- Tạo cột số để dùng cho XGBoost
+    amount BIGINT,
     current_balance AS amount,
     PRIMARY KEY (user_id) NOT ENFORCED
  ) WITH (
@@ -59,7 +58,7 @@ CREATE TABLE IF NOT EXISTS minio_transactions_parquet (
     step INT,
     transaction_id STRING,
     amount DOUBLE,
-    type_code INT, -- Cột đã encode sang số để ML dễ học
+    type_code INT, 
     isFraud INT,
     dt STRING
 ) PARTITIONED BY (dt)
@@ -77,7 +76,7 @@ SELECT
     t.transaction_id,
     t.user_id AS user_id,
     t.amount AS transaction_amount,
-    u_sor.current_balance AS SOURCE_USER_OLD_BALANCE, --ây là số dư lấy từ bảng User
+    u_sor.current_balance AS SOURCE_USER_OLD_BALANCE, 
     CASE 
         WHEN t.payment_method = 'CASH_OUT' OR t.payment_method = 'TRANSFER' OR t.payment_method = 'DEBIT' THEN u_sor.current_balance - t.amount 
         ELSE (u_sor.current_balance + t.amount) -- Nếu là rút tiền hoặc chuyển tiền thì số dư mới sẽ là số dư cũ trừ đi số tiền giao dịch

@@ -6,6 +6,8 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}🚀 Bắt đầu quá trình cài đặt hệ thống Real-time Fraud Detection...${NC}"
+# 0. Khởi động Minikube với cấu hình đủ mạnh để chạy tất cả các service
+minikube start --cpus=4 --memory=8192
 
 # 1. Tạo các Namespace cần thiết
 echo -e "${GREEN}📦 Tạo Namespaces...${NC}"
