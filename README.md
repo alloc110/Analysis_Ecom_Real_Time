@@ -202,7 +202,7 @@ kubectl get secret -n monitoring monitor-stack-grafana -o jsonpath="{.data.admin
 
 1. In the Grafana sidebar, go to **Dashboards** -> **New** -> **Import**.
 
-2. Click **Upload JSON file** and select the file located at: **infra/monitoring/grafana-dashboard.json**.
+2. Click **Upload JSON file** and select the file located at: **assets/images/DB_Dashboard.json**.
 
 3. Select **PostgreSQL** as the Data Source (ensure you have connected Postgres as a Data Source first).
 
