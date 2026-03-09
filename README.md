@@ -1,224 +1,164 @@
-<<<<<<< HEAD
-# 🚀 J-DataPipe: Intelligent Data Engineering Platform
+# 📊 Real-time Data-driven Commercial Transaction Identification
 
-![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.13+-blue?style=for-the-badge&logo=python&logoColor=white)
+![Apache Flink](https://img.shields.io/badge/Apache%20Flink-1.17-E6522C?style=for-the-badge&logo=apache-flink&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-3.5-black?style=for-the-badge&logo=apache-kafka&logoColor=white)
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-3.0-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-1.27-326ce5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache_Kafka-2496ED?style=for-the-badge&logo=apache-kafka&logoColor=white)
-![Gemini](https://img.shields.io/badge/Google%20Gemini-AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
 
-> **Project:** J-DataPipe Architecture  
-> **University:** Ho Chi Minh City Open University  
-> **Core Tech:** Kafka, Flink, PostgreSQL, MinIO, XGBoost, Kubernetes
+> **Project:** Real-time Architectural Analysis and Fraud Prediction System  
+> **University:** Ho Chi Minh City Open University (HCMOU)  
+> **Tech Stack:** PyFlink, Apache Kafka, Apache Airflow, PostgreSQL, Prometheus & Grafana
 
-J-DataPipe là một hệ thống **Data Platform** toàn diện kết hợp giữa xử lý thời gian thực (Real-time) và phân tích hàng loạt (Batch Processing). Hệ thống tận dụng sức mạnh của **Google Gemini API** để phân tích dữ liệu hình ảnh/kiến trúc và tích hợp mô hình **XGBoost** để dự báo giá trị.
+J-DataPipe is a comprehensive Data Platform that seamlessly integrates real-time stream processing with advanced predictive analytics. The system leverages an integrated XGBoost model to provide high-accuracy value forecasting and anomaly detection.
 
 ---
 
-## 🏗 High-level System Architecture
+## 📋 Table of Contents
 
-Hệ thống được thiết kế theo mô hình Microservices vận hành trên Kubernetes, bao gồm các lớp:
-
-Dựa trên sơ đồ kiến trúc hệ thống bạn vừa gửi, tôi đã tinh chỉnh lại nội dung README.md để phản ánh đúng quy trình hoạt động của J-DataPipe, đặc biệt là sự kết hợp giữa Data Warehouse (PostgreSQL), Data Lake (MinIO/Hive) và luồng xử lý Streaming.
-
-Đây là mã nguồn Markdown hoàn chỉnh cho dự án của bạn:
-
-Markdown
-
-  # 🚀 J-DataPipe: Intelligent Data Engineering & AI Platform
-=======
-# 🚀 J-DataPipe: Intelligent Data Engineering & AI Platform
->>>>>>> fe8660700066bb079c4595a97fe781206482af09
-
-![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.95-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-1.27-326ce5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache_Kafka-2496ED?style=for-the-badge&logo=apache-kafka&logoColor=white)
-![Gemini](https://img.shields.io/badge/Google%20Gemini-AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)
-
-> **Project:** J-DataPipe Platform  
-> **Affiliation:** Ho Chi Minh City Open University  
-> **Architecture Stack:** Airflow, Kafka, Flink, PostgreSQL, MinIO, XGBoost, Kubernetes
-
-J-DataPipe là một nền tảng dữ liệu toàn diện (End-to-End Data Platform) được thiết kế để xử lý dữ liệu quy mô lớn, kết hợp giữa kiến trúc **Lambda/Kappa** để phục vụ cả nhu cầu phân tích thời gian thực và lưu trữ dài hạn. Hệ thống tích hợp **Gemini AI** để phân tích kiến trúc hình ảnh và **XGBoost** để dự báo xu hướng dữ liệu.
-
----
-
-## 🏗 High-level System Architecture
-
-Hệ thống được vận hành trên nền tảng **Kubernetes**, đảm bảo khả năng mở rộng và quản lý microservices hiệu quả.
-
-### 1. Orchestration & Ingestion
-
-- **Airflow:** Điều phối luồng dữ liệu từ nguồn (Generate Data) vào hệ thống lưu trữ tập trung.
-
-### 2. Hybrid Data Storage
-
-- **Data Warehouse (PostgreSQL):** Lưu trữ dữ liệu có cấu trúc, phục vụ các truy vấn phân tích tức thời.
-- **Data Lake (MinIO & Hive):** Lưu trữ dữ liệu thô (Raw Data) và object storage, cho phép xử lý dữ liệu lớn với Hive.
-
-### 3. Real-time Streaming
-
-- **Debezium (CDC):** Theo dõi và trích xuất sự thay đổi dữ liệu từ PostgreSQL.
-- **Apache Kafka:** Hệ thống hàng đợi thông điệp chịu tải cao, điều phối luồng dữ liệu giữa các service.
-- **Apache Flink:** Xử lý dòng dữ liệu (Stateful Stream Processing) với độ trễ cực thấp.
-
-### 4. AI & Prediction Layer
-
-- **Google Gemini API:** Phân tích hình ảnh, cung cấp mô tả kiến trúc thông minh.
-- **XGBoost:** Thực hiện các bài toán dự báo (Inference) dựa trên dữ liệu đã qua xử lý từ pipeline.
-
-### 5. Monitoring & Observability
-
-- **Prometheus:** Thu thập chỉ số (metrics) từ toàn bộ hạ tầng K8s.
-- **Grafana:** Trực quan hóa hiệu năng hệ thống qua các dashboard thời gian thực
+- [Repository Structure](#-repository-structure)
+- [High-level System Architecture](#-high-level-system-architecture)
+- [Prerequisites](#-prerequisites)
+- [Installation & Setup](#-installation--setup)
+- [Running the Application](#-running-the-application)
+- [Monitoring & Observability](#-monitoring--observability)
+- [Demo Video](#-demo-video)
 
 ---
 
 ## 📂 Repository Structure
 
 ```bash
-J-DataPipe/
-├── app/
-│   ├── main.py            # FastAPI Application
-│   ├── worker.py          # Celery/Stream processing worker
-│   └── ml_model/          # XGBoost & Gemini API integration
-├── config/
-│   ├── deployment.yaml    # K8s Deployment
-│   ├── service.yaml       # K8s Service networking
-│   └── fastapi-monitor.yaml # Prometheus Service Monitor
-├── charts/                # Helm charts for infrastructure
-├── Dockerfile             # Containerization
-└── requirements.txt       # Dependencies
+.
+.
+├── assets/                         # 🎨 Tài nguyên đa phương tiện
+│   ├── images/
+│   │   └── architecture.png        # Sơ đồ kiến trúc tổng thể của hệ thống
+│   └── videos/                     # Video demo vận hành (FastAPI, Grafana)
+│
+├── Dags/                           # 🌬️ Apache Airflow Orchestration
+│   ├── fake_transaction.py         # DAG tự động tạo & bơm dữ liệu giả vào Kafka
+│   ├── init_data.py                # DAG khởi tạo dữ liệu mẫu cho Postgres/MinIO
+│   └── start_flink.py              # DAG điều khiển và giám sát trạng thái Flink Job
+│
+├── FlinkData/                      # ⚙️ Real-time Processing (PyFlink)
+│   ├── fraud_model.json            # Trọng số mô hình XGBoost đã được train
+│   ├── fraud_prediction.py         # Script xử lý dòng (Stream) & dự báo gian lận
+│   └── init.sql                    # Định nghĩa bảng (DDL) cho Flink SQL Connector
+│
+├── infra/                          # 🏗️ Infrastructure as Code (Kubernetes)
+│   ├── airflow/
+│   │   └── override-values.yaml# Cấu hình tùy chỉnh cho Helm Chart Airflow
+│   ├── flink/                      # Cấu hình cụm Flink (JobManager, TaskManager)
+│   │   ├── deployment.yaml
+│   │   ├── flink-config.yaml       # Biến môi trường và cấu hình vận hành Flink
+│   │   ├── taskmanager.yaml        # Định nghĩa tài nguyên xử lý của TaskManager
+│   │   └── ui-jobmanager.yaml      # Service mở cổng Web UI cho Flink (30081)
+│   ├── kafka/                      # Hệ thống truyền tin (Strimzi/Kafka-on-K8s)
+│   │   ├── connect.yaml            # 🔌 Cấu hình Kafka Connect Cluster - Nền tảng để chạy các bộ kết nối (Connectors)
+│   │   ├── kafka-kraft.yaml        # 🚀 Cấu hình Kafka KRaft mode
+│   │   ├── kafka.yaml              # 🛠️ Định nghĩa Cluster Kafka
+│   │   ├── nodepool.yaml           # 🏗️ Quản lý nhóm các Node trong Kafka, giúp tách biệt vai trò Controller và Broker
+│   │   └── postgres-connect.yaml   # 📥 Sink Connector: Tự động đẩy dữ liệu từ Kafka Topic vào PostgreSQL (Database)
+│   └── postgres/                   # Database lưu trữ kết quả cuối cùng
+│       └── postgres-hive-db.yaml
+│
+├── models/                         # 🧠 Machine Learning Development
+│   └── training.py                 # Script huấn luyện mô hình XGBoost từ dữ liệu thô
+│
+├── scripts/                        # 🛠️ Database & Automation Scripts
+│   └── create_db.sql               # Khởi tạo Schema và bảng cho PostgreSQL
+│
+├── script.sh                       # 🚀 Master Script: Cài đặt toàn bộ hệ thống 1-click
+├── Dockerfile                      # Đóng gói môi trường thực thi (v7, v8...)
+├── README.md                       # Tài liệu hướng dẫn chi tiết
 ```
 
-🚀 Real-Time Data Pipeline with Kafka, Flink & Gemini AI
+---
 
-This project implements a real-time data processing pipeline using Kafka, Flink, and Gemini AI for intelligent data analysis.
-The system is deployed on Kubernetes (Minikube) and monitored using Prometheus + Grafana.
+## 🏗 High-level System Architecture
 
-📚 This project is developed as part of a research initiative at Ho Chi Minh City Open University.
+![High-level System Architecture](assets/images/architecture.png)
 
-🔧 Prerequisites
+### 1. Orchestration & Ingestion
 
-To run this project locally, you need:
+- **Apache Airflow:** Orchestrates data pipelines, managing data flow from sources (Data Generation) to centralized storage systems.
 
-🐳 Docker Desktop
+### 2. Hybrid Data Storage
 
-☸️ Minikube (v1.30+)
+- **Data Warehouse (PostgreSQL):** Stores structured data to support rapid analytical queries and business intelligence.
 
-📦 Helm
+### 3. Real-time Streaming
 
-🎛 kubectl (configured to connect to your cluster)
+- **Debezium (CDC):** Implements Change Data Capture to track and extract real-time data modifications from PostgreSQL.
+- **Apache Kafka:** A high-throughput message queuing system that decouples and coordinates data streams between services.
+- **Apache Flink:** Performs low-latency, stateful stream processing for real-time analytics and transformations.
 
-🔑 Gemini API Key from Google AI Studio
+### 4. AI & Prediction Layer
 
-🕹️ Installation & Setup
-1️⃣ Start Kubernetes Cluster
-minikube start --driver=docker
+- **XGBoost:** Executes predictive modeling and real-time inference based on processed data features delivered by the pipeline.
 
-Verify cluster status:
+### 5. Monitoring & Observability
 
-kubectl get nodes
-2️⃣ Configure Environment Secrets
+- **Prometheus:** Collects performance metrics across the entire Kubernetes infrastructure in real-time.
+- **Grafana:** Provides comprehensive visualization of system performance through interactive, real-time dashboards.
 
-Create a Kubernetes Secret to store your Gemini API key:
+---
 
-kubectl create secret generic gemini-secret \
-  --from-literal=GEMINI_API_KEY=YOUR_KEY_HERE
+# 🔧 Prerequisites
 
-Verify:
+To run the **J-DataPipe** project locally, ensure your machine meets the hardware requirements and has the following tools installed:
 
-kubectl get secrets
-3️⃣ Deploy the Data Pipeline
-kubectl apply -f config/deployment.yaml
-kubectl apply -f config/service.yaml
+### 🖥️ Hardware Recommendations
 
-Check running pods:
+Because the pipeline runs multiple heavy-duty services (Kafka, Flink, Airflow, and Monitoring), your system should ideally have:
 
-kubectl get pods
-4️⃣ Setup Monitoring Stack (Prometheus + Grafana)
+- **CPU:** 4+ Cores
+- **RAM:** 16GB (Minikube requires at least **8GB** dedicated to the cluster)
+- **Disk:** 20GB free space
 
-Add Helm repository:
+### 🛠️ Required Tools
 
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
+| Tool               | Description                                                                      | Download / Guide                                                 |
+| :----------------- | :------------------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| **Docker Desktop** | Essential container runtime to build images and host the Minikube node.          | [Download Here](https://www.docker.com/products/docker-desktop/) |
+| **Minikube**       | Local Kubernetes cluster orchestrator.                                           | [Installation Guide](https://minikube.sigs.k8s.io/docs/start/)   |
+| **Kubectl**        | The standard CLI tool for interacting with the Kubernetes API.                   | [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)       |
+| **Helm v3**        | K8s Package Manager used for deploying Airflow and the Prometheus/Grafana stack. | [Install Helm](https://helm.sh/docs/intro/install/)              |
+| **Python 3.13+**   | Required for local ML training (`models/`) and PyFlink development.              | [Download Python](https://www.python.org/downloads/)             |
 
-Install kube-prometheus-stack:
+---
 
-helm install monitor-stack prometheus-community/kube-prometheus-stack \
-  --namespace monitoring \
-  --create-namespace
-📊 Monitoring
+### ✅ Verification
 
-Forward port to access Grafana:
+Run the following commands in your terminal to verify the installation:
 
-kubectl port-forward svc/monitor-stack-grafana 3000:80 -n monitoring
+```bash
+docker --version      # Should be v20.10+
+minikube version      # Should be v1.30+
+kubectl version --client
+helm version
+python --version
+```
 
-Access:
+---
 
-http://localhost:3000
+## 🕹️ Installation & Setup
+```bash
+bash script.sh
+```
+---
 
-👤 Username: admin
+## 🎮 Running the Application
 
-🔑 Get password:
+---
 
-kubectl get secret monitor-stack-grafana -n monitoring \
-  -o jsonpath="{.data.admin-password}" | base64 --decode
+## 🖥️ Monitoring & Observability
 
-The dashboard provides:
+---
 
-Kafka throughput metrics
-
-Flink consumer lag
-
-Pod CPU & memory usage
-
-JVM performance metrics
-
-🏗️ System Architecture
-Database → Debezium → Kafka → Flink → Gemini AI → Output Sink
-                                ↓
-                           Prometheus
-                                ↓
-                             Grafana
-🛠️ Technology Stack
-
-Apache Kafka – Message Broker
-
-Apache Flink – Stream Processing
-
-Debezium – CDC Connector
-
-Prometheus – Metrics Collection
-
-Grafana – Visualization
-
-Kubernetes – Container Orchestration
-
-Minikube – Local Kubernetes Cluster
-
-🧪 Development & Extensions
-
-You can extend this system by:
-
-Writing a Python script for Debezium → Kafka producer
-
-Developing advanced Flink streaming jobs
-
-Integrating MinIO (S3-compatible storage)
-
-Adding Alerting with Prometheus Alertmanager
-
-Deploying to cloud environments (EKS, GKE, AKS)
-
-🛠 Troubleshooting
-Pod in CrashLoopBackOff
-kubectl logs <pod-name>
-Cannot access Grafana
-kubectl get svc -n monitoring
-👨‍💻 Author
-
-Research Student
-Ho Chi Minh City Open University
-2026
+## ⚓ Demo Video
