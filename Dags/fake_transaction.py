@@ -68,11 +68,11 @@ with DAG(
       default_args=default_args,
       description='Tạo dữ liệu ảo',
       start_date=datetime(2026, 2, 1),
-      schedule='*/1 * * * *',
+      schedule='* * * * *',
       catchup=False
 ) as dag:
       generate_task = PythonOperator(
       task_id='generate_fake_transactions',
       python_callable=generate_and_insert_data,
-      op_kwargs={'batch_size': 500} # Mỗi giờ tạo 500 giao dịch
+      op_kwargs={'batch_size': 2000}
 )
