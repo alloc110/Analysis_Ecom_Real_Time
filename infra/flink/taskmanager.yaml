@@ -21,6 +21,13 @@ spec:
           args: ["taskmanager"]
           ports:
             - containerPort: 6121
+          resources:
+            limits:
+              memory: "4Gi"    # TaskManager thường cần nhiều RAM hơn để xử lý dữ liệu
+              cpu: "1000m"
+            requests:
+              memory: "2Gi"
+              cpu: "500m"
           volumeMounts:
             # Sửa đoạn này: chỉ gắn duy nhất file cấu hình
             - name: config-volume

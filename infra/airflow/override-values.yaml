@@ -119,3 +119,8 @@ scheduler:
 worker:
   serviceAccount:
     name: "airflow-worker-sa"
+
+
+extraEnv: |
+  - name: my_postgres_conn
+    value: "postgres://hiveuser:hivepassword@postgres-service.data-storage.svc.cluster.local:5432/public"

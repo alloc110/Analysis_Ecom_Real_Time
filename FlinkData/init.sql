@@ -1,14 +1,14 @@
 -- =================================================================
 -- 1. CÀI ĐẶT HỆ THỐNG & KẾT NỐI S3 (MINIO)
 -- =================================================================
-SET 'table.exec.resource.default-parallelism' = '1';
-SET 'sql-client.execution.result-mode' = 'table';
+-- SET 'table.exec.resource.default-parallelism' = '1';
+-- SET 'sql-client.execution.result-mode' = 'table';
 
--- Cấu hình để Flink có thể ghi file vào MinIO
-SET 's3.endpoint' = 'http://my-minio.data-storage.svc.cluster.local:9000';
-SET 's3.access-key' = 'hiveuser'; 
-SET 's3.secret-key' = 'hivepassword';
-SET 's3.path.style.access' = 'true';
+-- -- Cấu hình để Flink có thể ghi file vào MinIO
+-- SET 's3.endpoint' = 'http://my-minio.data-storage.svc.cluster.local:9000';
+-- SET 's3.access-key' = 'hiveuser'; 
+-- SET 's3.secret-key' = 'hivepassword';
+-- SET 's3.path.style.access' = 'true';
 
 -- =================================================================
 -- 2. BẢNG KAFKA (DỮ LIỆU GIAO DỊCH REAL-TIME)
@@ -54,19 +54,19 @@ CREATE TABLE IF NOT EXISTS pg_users (
 -- =================================================================
 -- 4. BẢNG MINIO (LƯU TRỮ PARQUET VĨNH VIỄN)
 -- =================================================================
-CREATE TABLE IF NOT EXISTS minio_transactions_parquet (
-    step INT,
-    transaction_id STRING,
-    amount DOUBLE,
-    type_code INT, 
-    isFraud INT,
-    dt STRING
-) PARTITIONED BY (dt)
-WITH (
-    'connector' = 'filesystem',
-    'path' = 's3a://flink-data/transactions_archive/',
-    'format' = 'parquet'
-);
+-- CREATE TABLE IF NOT EXISTS minio_transactions_parquet (
+--     step INT,
+--     transaction_id STRING,
+--     amount DOUBLE,
+--     type_code INT, 
+--     isFraud INT,
+--     dt STRING
+-- ) PARTITIONED BY (dt)
+-- WITH (
+--     'connector' = 'filesystem',
+--     'path' = 's3a://flink-data/transactions_archive/',
+--     'format' = 'parquet'
+-- );
 
 
 -- =================================================================

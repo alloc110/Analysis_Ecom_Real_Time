@@ -15,6 +15,24 @@ spec:
         app: flink
         component: jobmanager
     spec:
+      initContainers:
+        - name: init-db
+          image: postgres:16
+          command: ['sh', '-c']
+          args:
+            - |
+              until psql $my_postgres_conn -c '\q'; do
+                echo "Đang đợi Postgres tại $my_postgres_conn..."
+                sleep 5
+              done
+              psql $my_postgres_conn -f /opt/flink/usrlib/init.sql
+          env:
+            - name: my_postgres_conn
+              value: "postgres://hiveuser:hivepassword@postgres-service.data-storage.svc.cluster.local:5432/ecom_Db"
+          volumeMounts:
+          - name: flink-config-volume
+            mountPath: /opt/flink/usrlib/init.sql
+            subPath: init.sql
       containers:
         - name: jobmanager
           image: allocknguyen/flink-ml-full:v3
@@ -42,7 +60,7 @@ spec:
               cpu: "500m"
             limits:
               memory: "1Gi"
-              cpu: "1"
+              cpu: "500m"
       volumes:
         - name: config-volume
           configMap:
@@ -54,9 +72,9 @@ spec:
           configMap:
             name: flink-config
             items:
-              - key: init.sql            # Key này phải trùng với tên trong ConfigMap
+              - key: init.sql           
                 path: init.sql
-              - key: fraud_prediction.py  # Key này phải trùng với tên trong ConfigMap
+              - key: fraud_prediction.py  
                 path: fraud_prediction.py
-              - key: fraud_model.json      # CHỖ QUAN TRỌNG NHẤT NÈ LỘC
+              - key: fraud_model.json      
                 path: fraud_model.json

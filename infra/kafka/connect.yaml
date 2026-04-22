@@ -24,7 +24,6 @@ spec:
     output:
       type: docker
       image: allocknguyen/my-connect:latest
-      pushSecret: my-docker-secret
     plugins:
       - name: debezium-postgres
         artifacts:

@@ -153,7 +153,15 @@ python --version
 ```bash
 bash script.sh
 ```
+kubectl exec -it airflow-api-server-547b89fc49-l2h4r -n orchestration -- airflow users create \
+>     --username admin \
+>     --firstname Loc \
+>     --lastname Nguyen \
+>     --role Admin \
+>     --email admin@example.com \
+>     --password admin
 
+SETUP CONNECT
 ---
 
 ## 🎮 Running the Application

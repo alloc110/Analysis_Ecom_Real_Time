@@ -5,9 +5,24 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
+# --- BỔ SUNG CÁC HELM REPO CÒN THIẾU ---
+echo -e "${GREEN}📥 Thêm các Helm Repository...${NC}"
+
+# Repo cho Strimzi (Kafka Operator)
+helm repo add strimzi https://strimzi.io/charts/
+
+# Repo cho Apache Airflow
+helm repo add apache-airflow https://airflow.apache.org/
+
+# Repo cho Prometheus/Grafana (Cậu đã có, nhưng thêm vào cho chắc)
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+# Update tất cả
+helm repo update
+
 echo -e "${BLUE}🚀 Bắt đầu quá trình cài đặt hệ thống Real-time Fraud Detection...${NC}"
 # 0. Khởi động Minikube với cấu hình đủ mạnh để chạy tất cả các service
-minikube start --cpus=4 --memory=8192
+minikube start --cpus=4 --memory=11000
 
 # 1. Tạo các Namespace cần thiết
 echo -e "${GREEN}📦 Tạo Namespaces...${NC}"
@@ -21,7 +36,15 @@ echo -e "${GREEN}💾 Cài đặt Database và Storage...${NC}"
 kubectl apply -f infra/postgres/ -n data-storage
 kubectl apply -f infra/minio/ -n data-storage
 
+
+kubectl create configmap postgres-init-script \
+  --from-file=create_db.sql=infra/postgres/create_db.sql \
+  -n data-storage
 # 3. Cài đặt Kafka (Dùng Strimzi Operator hoặc file YAML của Lộc)
+helm upgrade --install strimzi-operator strimzi/strimzi-kafka-operator --namespace stream --create-namespace
+helm repo update  
+
+
 echo -e "${GREEN}🎡 Cài đặt Kafka Cluster...${NC}"
 kubectl apply -f infra/kafka/ -n stream
 

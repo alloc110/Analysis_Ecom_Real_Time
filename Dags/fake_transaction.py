@@ -8,7 +8,6 @@ import random
 fake = Faker()
 
 def generate_and_insert_data(batch_size=10, **kwargs):
-# 1. Kết nối tới Postgres bằng Connection ID chúng ta đã tạo
 # Nhớ đổi 'postgres_final' thành ID thật bạn đã đặt trong values.yaml
       try:
             pg_hook = PostgresHook(postgres_conn_id='my_postgres_conn')
@@ -74,5 +73,5 @@ with DAG(
       generate_task = PythonOperator(
       task_id='generate_fake_transactions',
       python_callable=generate_and_insert_data,
-      op_kwargs={'batch_size': 2000}
+      op_kwargs={'batch_size': 1000}
 )
